@@ -11,6 +11,7 @@ private:
     int capacity;
     
     void increase() {
+        // Performance O(n)
         T* newElements = new T[this->capacity *= 2];
         for (int i = 0; i < this->size; i++){
             newElements[i] = elements[i];
@@ -21,9 +22,9 @@ private:
 
 public:
     ArrayList(int capacity){
-        this->elements = new T[capacity];
+        elements = new T[capacity];
         this->capacity = capacity;
-        this->size = 0;
+        size = 0;
 
     };
     ~ArrayList(){
@@ -31,30 +32,58 @@ public:
     };
 
     bool isEmpty() {
-        return (this->size == 0);
+        return (size == 0);
     }
 
     void add(T element){
-        if (this->size == this->capacity) {
+        // Performance sempre O(1) toda vez que tive espaco dentro do array
+        if (size == capacity) {
             increase();
         }
-        this->elements[this->size] = element;
-        this->size++;
+        elements[size] = element;
+        size++;
     }
-
+    
     void add(int index, T element) {
-        if (index > this->size || index < 0) throw out_of_range("Index " + to_string(index) + " is out of bounds.");
-        if(this->size == this->capacity) increase();
-        this->elements[index] = element;
+        // Performance sempre O(1) toda vez que tive espaco dentro do array
+        if (index > size || index < 0) throw out_of_range("Index " + to_string(index) + " is out of bounds.");
+        if(size == capacity) increase();
+        elements[index] = element;
+    }
+    
+    T get(int index){
+        // Performance O(1)
+        if (index > size || index < 0) throw out_of_range("Index " + to_string(index) + " is out of bounds.");
+        return elements[index];
+    }
+    
+    void remove(int index) {
+        // Performance O(1) quando e o ultimo elemento
+        // Performance O(n)
+        if (index > size || index < 0) throw out_of_range("Index " + to_string(index) + " is out of bounds.");
+        
+        if (index == size - 1) {
+            elements[index] = T();
+            size--;
+        } else {
+            for (int i = index; i < size - 1; i++) {
+                elements[i] = elements[i+1];
+            }
+            elements[size - 1] = T();
+            size--;
+        }
+    }
+    
+    T indexOf(int index) {
+        // Performance O(1)
+        if (index > size || index < 0) throw out_of_range("Index " + to_string(index) + " is out of bounds.");
+        return elements[index];
     }
 
     void print(){
-        for (int i = 0; i < size; i++)
-        {
-            cout << this->elements[i] << " " << endl;
-        }
+        // Performance O(n)
+        for (int i = 0; i < size; i++) cout << elements[i] << " " << endl;
     }
-
 
 };
 
@@ -62,16 +91,19 @@ public:
 
 
 int main(){
-    ArrayList<int>* arr = new ArrayList<int>(1);
-    cout << arr->isEmpty() << endl;
-    arr->add(10);
-    arr->add(10);
-    arr->add(10);
-    arr->add(10);
-    arr->print();
-    cout << "==========" << endl; 
-    arr->add(2,2);
-    arr->print();
+    ArrayList<int> arr(1);
+    arr.add(1);
+    arr.add(2);
+    arr.add(3);
+    arr.add(4);
+    arr.print();
+    cout << "==============" << endl;
+    arr.remove(2);
+    arr.print();
+    cout << "==============" << endl;
+    cout << arr.indexOf(1) << endl;
+
+
     
     return 0;
 }
