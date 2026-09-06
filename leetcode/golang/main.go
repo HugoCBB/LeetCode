@@ -8,6 +8,9 @@ import (
 
 
 func main() {
-	k := easy.RemoveElement([]int{3, 2, 2, 3}, 2)
-	fmt.Println(k)
+	// k := easy.RemoveElement([]int{3, 2, 2, 3}, 2)
+	// fmt.Println(k)
+
+	p := easy.Is_palindrome("ANA")
+	fmt.Print(p)
 }
